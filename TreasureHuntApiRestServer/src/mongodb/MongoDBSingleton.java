@@ -6,7 +6,7 @@ import com.mongodb.DB;
 import com.mongodb.MongoClient;
 
 
-
+//
 public class MongoDBSingleton {
 
 	private static MongoDBSingleton mDbSingleton;
