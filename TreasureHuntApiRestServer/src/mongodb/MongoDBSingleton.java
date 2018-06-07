@@ -16,11 +16,11 @@ public class MongoDBSingleton {
 	private static DB db ;
 	
 	
-	private static final String dbHost = "";
+	private static final String dbHost = "35.205.189.193";
 	private static final int dbPort = 27017;
 	private static final String dbName = "chasseautresor";
-	private static final String dbUser = "";
-	private static final String dbPassword = "";
+	private static final String dbUser = "chasseautresor";
+	private static final String dbPassword = "chasseautresor";
 	
 	private MongoDBSingleton(){};
 	
