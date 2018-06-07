@@ -50,6 +50,22 @@ public class WebController {
     	 coll.insert(doc);
     	 return db.isAuthenticated() + " ; " + db.getName();
 
+     } 
+     
+     @GET 
+     @Path("/insertUser/{email}/{login}/{password}")  
+     @Produces("text/plain")  
+     public String insertUser(@PathParam("email") String email  , @PathParam("login") String login , @PathParam("password") String password){
+    	 MongoDBSingleton dbSingleton = MongoDBSingleton.getInstance();
+    	 DB db = dbSingleton.getTestdb();
+    	 DBCollection coll = db.getCollection("account");	
+    	 BasicDBObject user = new BasicDBObject("email", email).
+    			 append("login", login).
+    			 append("password", password);
+    			 
+    	 coll.insert(user);
+    	 return db.isAuthenticated() + " ; " + db.getName();
+
      }  
      
      @GET 
