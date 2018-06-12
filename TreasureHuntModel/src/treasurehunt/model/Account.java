@@ -18,20 +18,33 @@ public class Account {
 	public String login;
 	
 	private String hashedPassword;
-	private byte[] passwordSalt;
 	
 	private Account(String id) {
 		
 	}
 	
-	@XmlElement
-	public String getHashedPassword() {
-		return hashedPassword;
+	public boolean checkPassword(String password) {
+		
+		boolean result = false;
+		
+		try {
+			result = PasswordHashTool.check(password,hashedPassword);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 	
 	public void setPassword(String password) {
 		
-		this.hashedPassword = hash(password);
+		try {
+			this.hashedPassword = PasswordHashTool.getSaltedHash(password);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static Account getInstance(String id) {
@@ -40,11 +53,5 @@ public class Account {
 		}
 		return accounts.get(id);
 	}
-	
-	public static String hash(String password) {
-		// TODO : hashage du mot de passe
-		return password;
-	}
-	
 
 }
