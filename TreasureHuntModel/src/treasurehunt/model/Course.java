@@ -2,9 +2,12 @@ package treasurehunt.model;
 
 import java.time.LocalDateTime;
 
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class Course {
 	
-
 	public String id;
 
 	public String name;
@@ -15,6 +18,6 @@ public class Course {
 
 	public int jokersAllowed;
 
-	public Step firstStep;
+	public StepComposite start;
 	
 }

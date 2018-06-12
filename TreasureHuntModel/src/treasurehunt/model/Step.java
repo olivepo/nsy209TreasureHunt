@@ -6,14 +6,21 @@ import javax.xml.bind.annotation.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class Step {
 
+	@XmlElement
 	public int id;
+	@XmlElement
 	public float latitude;
+	@XmlElement
 	public float longitude;
+	@XmlElement
 	public int scorePointsGivenIfSuccess;
+	@XmlElement
 	public int maximumDurationInMinutes;
+	@XmlElement
 	public String description;
-	
+	@XmlElement
 	public Riddle riddle;
+	
 	@XmlElementWrapper(name="nextSteps")
     @XmlElements({
        @XmlElement(name="StepLeaf",     type=StepLeaf.class),

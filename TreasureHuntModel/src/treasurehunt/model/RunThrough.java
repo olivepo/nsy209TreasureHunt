@@ -6,7 +6,7 @@ import java.time.Duration;
 import java.util.List;
 
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.FIELD)
 public class RunThrough {
 	
 	@XmlTransient
@@ -18,11 +18,11 @@ public class RunThrough {
 	public LocalDateTime startedAt;
 	@XmlElement
 	public LocalDateTime endedAt;
-
+	@XmlElement
 	private LocalDateTime currentStepBegin;
+	@XmlElement
 	private Step currentStep;
 	
-
     @XmlElement(name="StepResolution")
 	private List<StepResolution> stepResolutions;
 	
@@ -30,17 +30,14 @@ public class RunThrough {
 		return false;
 	}
 	
-	@XmlTransient
 	public int getScore() {
 		return 0;
 	}
 	
-	@XmlTransient
 	public Step getCurrentStep() {
 		return currentStep;
 	}
 	
-	@XmlTransient
 	public void setCurrentStep(Step step) {
 		currentStepBegin = LocalDateTime.now();
 		currentStep = step;
