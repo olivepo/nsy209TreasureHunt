@@ -9,6 +9,9 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RunThrough {
 	
+	@XmlElement
+	public int id;
+	
 	@XmlTransient
 	public Account account;
 	@XmlTransient
