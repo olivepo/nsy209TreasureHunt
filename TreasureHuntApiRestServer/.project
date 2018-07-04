@@ -3,6 +3,7 @@
 	<name>TreasureHuntApiRestServer</name>
 	<comment></comment>
 	<projects>
+		<project>TreasureHuntModel</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

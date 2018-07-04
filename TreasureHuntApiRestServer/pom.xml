@@ -7,6 +7,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>TreasureHuntApiRestServer</name>
+	
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
@@ -58,6 +59,8 @@
 			<artifactId>jersey-servlet</artifactId>
 			<version>1.18.1</version>
 		</dependency>
+		
+		
 
 		<dependency>
 			<groupId>asm</groupId>
