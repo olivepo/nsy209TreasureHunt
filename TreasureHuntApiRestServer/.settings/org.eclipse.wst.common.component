@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+                
+    
+    
+    <wb-module deploy-name="TreasureHuntApiRestServer-0.0.1-SNAPSHOT">
+                                
+        
+        
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+                                
+        
+        
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+                        
+        
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <dependent-module archiveName="TreasureHuntModel.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/TreasureHuntModel/TreasureHuntModel">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+                                
+        
+        
+        <property name="context-root" value="TreasureHuntApiRestServer"/>
+                                
+        
+        
+        <property name="java-output-path" value="/TreasureHuntApiRestServer/build/classes"/>
+                            
+    
+    
+    </wb-module>
+            
+
+
+</project-modules>
