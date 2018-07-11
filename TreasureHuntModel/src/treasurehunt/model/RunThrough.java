@@ -1,32 +1,19 @@
 package treasurehunt.model;
 
-import javax.xml.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.time.Duration;
 import java.util.List;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class RunThrough {
 	
-	@XmlElement
+
 	public int id;
-	
-	@XmlTransient
 	public Account account;
-	@XmlTransient
 	public Course course;
-	
-	@XmlElement
 	public LocalDateTime startedAt;
-	@XmlElement
 	public LocalDateTime endedAt;
-	@XmlElement
 	private LocalDateTime currentStepBegin;
-	@XmlElement
 	private Step currentStep;
-	
-    @XmlElement(name="StepResolution")
 	private List<StepResolution> stepResolutions;
 	
 	public boolean isCompleted() {

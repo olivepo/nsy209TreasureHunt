@@ -1,26 +1,26 @@
 package treasurehunt.model;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Hashtable;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+@XmlRootElement(name= "account")
 public class Account {
 	
 	private static Hashtable<String,Account> accounts = new Hashtable<String,Account>();
 	
-	@XmlElement
 	public String email;
-	@XmlElement
 	public String login;
+	public String hashedPassword;
 	
-	private String hashedPassword;
+	// Nécessaire pour JACKSON ObjectMapper.ReadValue(), à ne pas utiliser !!!
+	public Account() {
+		
+	}
 	
 	private Account(String id) {
-		
+		email = id;
 	}
 	
 	public boolean checkPassword(String password) {
@@ -37,6 +37,7 @@ public class Account {
 		return result;
 	}
 	
+	@XmlTransient
 	public void setPassword(String password) {
 		
 		try {

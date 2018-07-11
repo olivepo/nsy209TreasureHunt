@@ -10,41 +10,19 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   <servlet>
-        <servlet-name>RestServer-servlet</servlet-name>
+        <servlet-name>RestServer-serlvet</servlet-name>
         <servlet-class>
             com.sun.jersey.spi.container.servlet.ServletContainer
         </servlet-class>
         <init-param>
-			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>services</param-value>
-		</init-param>
-        <init-param>
             <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
             <param-value>true</param-value>
         </init-param>
+        
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>RestServer-servlet</servlet-name>
+        <servlet-name>RestServer-serlvet</servlet-name>
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
-    <!-- Ajout des contraintes de sécurité pour permettre à un utilisateur précis d'utiliser PUT -->
-    <security-constraint>
-	<web-resource-collection>
-		<web-resource-name>TreasureHuntApiRestServer</web-resource-name>
-		<url-pattern>/api/*</url-pattern>
-	    <http-method>PUT</http-method>
-	</web-resource-collection>
-	<auth-constraint>
-		<role-name>TreasureHuntClient</role-name>
-	</auth-constraint>
-	</security-constraint>
-	<login-config>
-		<auth-method>BASIC</auth-method>
-		<realm-name></realm-name>
-	</login-config>
-	<security-role>
-		<description>Role for restricted resources</description>
-		<role-name>TreasureHuntClient</role-name>
-	</security-role>  
 </web-app>
