@@ -79,7 +79,7 @@ public class AccountWebController {
     	 MongoDBSingleton dbSingleton = MongoDBSingleton.getInstance();
     	 DB db = dbSingleton.getTestdb();
     	 DBCollection coll = db.getCollection(collectionName);	
-    	 DBCursor cursor = coll.find();//.sort(new BasicDBObject(idKeyName, 1));
+    	 DBCursor cursor = coll.find().sort(new BasicDBObject(idKeyName, 1));
     	 List<Account> list = new ArrayList<Account>();
     	 Account account;
     	 String email;

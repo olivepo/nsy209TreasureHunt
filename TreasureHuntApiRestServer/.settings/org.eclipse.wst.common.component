@@ -14,7 +14,7 @@
                         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <dependent-module archiveName="TreasureHuntModel.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/TreasureHuntModel/TreasureHuntModel">
+        <dependent-module archiveName="TreasureHuntModel-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/TreasureHuntModel/TreasureHuntModel">
             <dependency-type>uses</dependency-type>
         </dependent-module>
                                 
