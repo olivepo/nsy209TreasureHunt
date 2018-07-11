@@ -1,0 +1,87 @@
+Configuration Tomcat pour autoriser les requêtes PUT :
+
+Dans web.xml de Tomcat ajouter : 
+
+<servlet>
+	<servlet-name>default</servlet-name>
+	<servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
+	<init-param>
+		<param-name>debug</param-name>
+		<param-value>0</param-value>
+	</init-param>
+	<init-param>
+		<param-name>listings</param-name>
+		<param-value>false</param-value>
+	</init-param>
+	
+	<!-- début ajout -->
+	<init-param>
+		<param-name>readonly</param-name>
+		<param-value>false</param-value>
+	</init-param>
+	<!-- fin ajout -->
+	
+    <load-on-startup>1</load-on-startup>
+</servlet>
+
+Dans tomcat-users.xml de Tomcat ajouter :
+
+<role rolename="TreasureHuntClient"/>
+<user name="thc" password="thcpass" roles="TreasureHuntClient" />
+
+Dans web.xml de l'API ajouter :
+
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>TreasureHuntApiRestServer</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  <servlet>
+        <servlet-name>RestServer-servlet</servlet-name>
+        <servlet-class>
+            com.sun.jersey.spi.container.servlet.ServletContainer
+        </servlet-class>
+        <init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>services</param-value>
+		</init-param>
+        <init-param>
+            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RestServer-servlet</servlet-name>
+        <url-pattern>/api/*</url-pattern>
+    </servlet-mapping>
+	
+	<!-- début ajout -->
+    <!-- Ajout des contraintes de sécurité pour permettre à un utilisateur précis d'utiliser PUT -->
+    <security-constraint>
+	<web-resource-collection>
+		<web-resource-name>TreasureHuntApiRestServer</web-resource-name>
+		<url-pattern>/api/*</url-pattern>
+	    <http-method>PUT</http-method>
+	</web-resource-collection>
+	<auth-constraint>
+		<role-name>TreasureHuntClient</role-name>
+	</auth-constraint>
+	</security-constraint>
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name></realm-name>
+	</login-config>
+	<security-role>
+		<description>Role for restricted resources</description>
+		<role-name>TreasureHuntClient</role-name>
+	</security-role>
+	<!-- fin ajout -->
+	
+</web-app>
