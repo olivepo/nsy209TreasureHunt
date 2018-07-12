@@ -1,6 +1,7 @@
 package treasurehunt.client;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.core.MediaType;
@@ -15,6 +16,7 @@ import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
 import treasurehunt.model.Account;
+import treasurehunt.model.Accounts;
 
 public class AccountRESTMethods {
 	
@@ -107,11 +109,9 @@ public class AccountRESTMethods {
 	           throw new Exception("Failed : HTTP error code : "+response.getStatus());
 	       }
 	 
-	       GenericType<List<Account>> generic = new GenericType<List<Account>>() {};
+	       Accounts accounts = response.getEntity(Accounts.class);
 	 
-	       List<Account> list = response.getEntity(generic);
-	 
-	       return list;
+	       return accounts.list;
 	}
 	
 }

@@ -2,19 +2,21 @@ package treasurehunt.model;
 
 import java.util.Hashtable;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 
-@XmlRootElement(name= "account")
+@XmlRootElement(name="account")
 public class Account {
 	
 	private static Hashtable<String,Account> accounts = new Hashtable<String,Account>();
 	
+	@XmlElement
 	public String email;
+	@XmlElement
 	public String login;
+	@XmlElement
 	public String hashedPassword;
 	
-	// Nécessaire pour JACKSON ObjectMapper.ReadValue(), à ne pas utiliser !!!
+	// Nï¿½cessaire pour JACKSON ObjectMapper.ReadValue(), ï¿½ ne pas utiliser !!!
 	public Account() {
 		
 	}

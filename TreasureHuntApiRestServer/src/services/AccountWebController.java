@@ -1,8 +1,5 @@
 package services;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
@@ -10,6 +7,7 @@ import javax.ws.rs.core.Response.Status;
 import com.mongodb.*;
 
 import treasurehunt.model.Account;
+import treasurehunt.model.Accounts;
 import mongodb.MongoDBSingleton;  
   
 @Path("/accountService")  
@@ -26,13 +24,20 @@ public class AccountWebController {
 	     MongoDBSingleton dbSingleton = MongoDBSingleton.getInstance();
 	     DB db = dbSingleton.getTestdb();
 	     DBCollection coll = db.getCollection(collectionName);
-	     BasicDBObject dbObject = new BasicDBObject(idKeyName, account.email)
-	    		 .append("email", account.email)
-	    		 .append("login", account.login)
-	    		 .append("hashedPassword", account.hashedPassword);
-	     coll.insert(dbObject);
-	     
-	     return Response.ok().build();
+	     DBObject dbObject = coll.findOne(new BasicDBObject(idKeyName,account.email));
+	     // contrôle de l'unicité de l'email
+	     if (dbObject != null) {
+	    	 return Response.status(Status.CONFLICT)
+	    			 .entity(String.format("Un compte avec l'email %s existe déjà.",account.email))
+	    			 .build();
+	     } else {
+		     dbObject = new BasicDBObject(idKeyName, account.email)
+		    		 .append("email", account.email)
+		    		 .append("login", account.login)
+		    		 .append("hashedPassword", account.hashedPassword);
+		     coll.insert(dbObject);
+		     return Response.ok().build();
+	     }
 
      }
      
@@ -65,7 +70,9 @@ public class AccountWebController {
 
 	     // If the user did not exist, return an error.  Otherwise, remove the user.
 	     if (dbObject == null) {
-	       return Response.status(Status.BAD_REQUEST).entity(String.format("Le compte pour l'email %s n'existe pas.",email)).build();
+	       return Response.status(Status.BAD_REQUEST)
+	    		   .entity(String.format("Le compte pour l'email %s n'existe pas.",email))
+	    		   .build();
 	     }
 	     
 	     coll.remove(new BasicDBObject(idKeyName,email));
@@ -75,12 +82,12 @@ public class AccountWebController {
      @GET 
      @Path("getAccounts")  
      @Produces(MediaType.APPLICATION_JSON)  
-     public List<Account> getAccounts() {
+     public Accounts getAccounts() {
     	 MongoDBSingleton dbSingleton = MongoDBSingleton.getInstance();
     	 DB db = dbSingleton.getTestdb();
     	 DBCollection coll = db.getCollection(collectionName);	
     	 DBCursor cursor = coll.find().sort(new BasicDBObject(idKeyName, 1));
-    	 List<Account> list = new ArrayList<Account>();
+    	 Accounts accounts = new Accounts();
     	 Account account;
     	 String email;
     	 while (cursor.hasNext()) { 
@@ -90,10 +97,10 @@ public class AccountWebController {
 	             account = Account.getInstance(email);
 	             account.login = (String) o.get("login");
 	             account.hashedPassword = (String) o.get("hashedpassword"); 
-	             list.add(account);
+	             accounts.list.add(account);
              }
          }
-    	 return list;
+    	 return accounts;
      }
      
 }  

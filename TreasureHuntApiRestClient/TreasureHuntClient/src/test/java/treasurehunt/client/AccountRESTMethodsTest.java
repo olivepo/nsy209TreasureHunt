@@ -17,20 +17,19 @@ public class AccountRESTMethodsTest {
 	public void testAll() {
 		
 		testDelete();
-		// base vide : Echec des op�rations GET,DELETE
+		// base vide : Echec des operations GET,DELETE
 		assertFalse(testGet());
-		//assertFalse(testGetAll());
 		assertFalse(testDelete());
 		
-		// insertion de 1 �l�ment
+		// insertion de 1 element
 		assertTrue(testPut());
 		
-		// base compl�te : r�ussite des op�rations GET,DELETE
+		// base complete : réussite des opérations GET,DELETE
 		assertTrue(testGet());
-		//assertTrue(testGetAll());
+		assertTrue(testGetAll());
 		assertTrue(testDelete());
 		
-		// base � nouveau vide
+		// base a nouveau vide
 		assertFalse(testGet());
 	}
 	
