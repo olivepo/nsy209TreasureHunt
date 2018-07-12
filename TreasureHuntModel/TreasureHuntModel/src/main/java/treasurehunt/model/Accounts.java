@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.*;
 
-@XmlRootElement(name="accounts")
+@XmlRootElement(name="Accounts")
 public class Accounts {
 	
 	public List<Account> list;

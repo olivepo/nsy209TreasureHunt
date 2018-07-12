@@ -1,7 +1,6 @@
 package treasurehunt.client;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.core.MediaType;
@@ -10,30 +9,28 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
-import treasurehunt.model.Account;
-import treasurehunt.model.Accounts;
+import treasurehunt.model.Course;
+import treasurehunt.model.Courses;
 
-public class AccountRESTMethods {
+public class CourseRESTMethods {
+	private final static String baseUrl = Configuration.baseUrl+"courseService/";
 
-	private final static String baseUrl = Configuration.baseUrl+"accountService/";
-
-	public static boolean put(Account account) throws Exception {
+	public static boolean put(Course course) throws Exception {
 
 		Client client = Client.create();
 		client.addFilter(new HTTPBasicAuthFilter(Configuration.tomcatUser, Configuration.tomcatUserPassword));
 
-		WebResource webResource = client.resource(baseUrl+"putAccount");
+		WebResource webResource = client.resource(baseUrl+"putCourse");
 
 		// Data send to web service.
 		ObjectMapper mapper = new ObjectMapper();
 		String input = null;
 		try {
-			input = mapper.writeValueAsString(account);
+			input = mapper.writeValueAsString(course);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
@@ -52,10 +49,10 @@ public class AccountRESTMethods {
 
 	}
 
-	public static Account get(String email) throws Exception {
+	public static Course get(String id) throws Exception {
 
 		Client client = Client.create();
-		WebResource webResource = client.resource(baseUrl+"getAccount/"+email);
+		WebResource webResource = client.resource(baseUrl+"getCourse/"+id);
 		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
 
 		switch (response.getStatus()) {
@@ -64,7 +61,7 @@ public class AccountRESTMethods {
 			return null;
 
 		case 200 :
-			return (Account) response.getEntity(Account.class);
+			return (Course) response.getEntity(Course.class);
 
 		default :
 			throw new Exception("Failed : HTTP error code : "+response.getStatus());
@@ -72,10 +69,10 @@ public class AccountRESTMethods {
 
 	}
 
-	public static boolean delete(String email) throws Exception {
+	public static boolean delete(String id) throws Exception {
 
 		Client client = Client.create();
-		WebResource webResource = client.resource(baseUrl+"deleteAccount/"+email);
+		WebResource webResource = client.resource(baseUrl+"deleteCourse/"+id);
 		ClientResponse response = webResource.accept(MediaType.TEXT_PLAIN).delete(ClientResponse.class);
 
 		switch (response.getStatus())
@@ -93,11 +90,11 @@ public class AccountRESTMethods {
 
 	}
 
-	public static List<Account> getAll() throws Exception {
+	public static List<Course> getNearestCourses(float latitude,float longitude) throws Exception {
 
 		Client client = Client.create();
 
-		WebResource webResource = client.resource(baseUrl+"getAccounts");
+		WebResource webResource = client.resource(baseUrl+"getNearestCourses/0.0/0.0");
 
 		Builder builder = webResource.accept(MediaType.APPLICATION_JSON)
 				.header("content-type", MediaType.APPLICATION_JSON);
@@ -109,9 +106,8 @@ public class AccountRESTMethods {
 			throw new Exception("Failed : HTTP error code : "+response.getStatus());
 		}
 
-		Accounts accounts = response.getEntity(Accounts.class);
+		Courses courses = response.getEntity(Courses.class);
 
-		return accounts.list;
+		return courses.list;
 	}
-
 }

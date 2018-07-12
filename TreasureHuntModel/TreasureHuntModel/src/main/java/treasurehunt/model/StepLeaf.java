@@ -1,6 +1,13 @@
 package treasurehunt.model;
 
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement(name="StepLeaf")
 public class StepLeaf extends Step {
+	
+	public StepLeaf() {
+		
+	}
 	
 	public String courseEndMessage;
 	

@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.time.Duration;
 import java.util.List;
 
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement(name="RunThrough")
 public class RunThrough {
 	
 
@@ -20,14 +23,17 @@ public class RunThrough {
 		return false;
 	}
 	
+	@XmlTransient
 	public int getScore() {
 		return 0;
 	}
 	
+	@XmlTransient
 	public Step getCurrentStep() {
 		return currentStep;
 	}
 	
+	@XmlTransient
 	public void setCurrentStep(Step step) {
 		currentStepBegin = LocalDateTime.now();
 		currentStep = step;

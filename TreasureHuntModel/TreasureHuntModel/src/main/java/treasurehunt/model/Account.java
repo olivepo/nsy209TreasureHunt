@@ -4,16 +4,13 @@ import java.util.Hashtable;
 
 import javax.xml.bind.annotation.*;
 
-@XmlRootElement(name="account")
+@XmlRootElement(name="Account")
 public class Account {
 	
 	private static Hashtable<String,Account> accounts = new Hashtable<String,Account>();
 	
-	@XmlElement
 	public String email;
-	@XmlElement
 	public String login;
-	@XmlElement
 	public String hashedPassword;
 	
 	// N�cessaire pour JACKSON ObjectMapper.ReadValue(), � ne pas utiliser !!!
@@ -32,7 +29,6 @@ public class Account {
 		try {
 			result = PasswordHashTool.check(password,hashedPassword);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -45,7 +41,6 @@ public class Account {
 		try {
 			this.hashedPassword = PasswordHashTool.getSaltedHash(password);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
