@@ -13,8 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -26,6 +25,7 @@ import mongodb.MongoDBSingleton;
 import treasurehunt.model.Course;
 import treasurehunt.model.Courses;
 import treasurehunt.model.Step;
+import treasurehunt.model.StepComposite;
 
 @Path("/courseService")
 public class CourseWebController {
@@ -78,7 +78,7 @@ public class CourseWebController {
 			course.jokersAllowed = (int) dbObject.get("jokersAllowed");
 			try {
 				course.start = new ObjectMapper()
-						.readValue((String) dbObject.get("start"), new TypeReference<Step>() {});
+						.readValue((String) dbObject.get("start"), StepComposite.class);
 			} catch (IOException e) {
 				e.printStackTrace();
 				return null;
@@ -130,7 +130,7 @@ public class CourseWebController {
 			course.jokersAllowed = (int) o.get("jokersAllowed");
 			try {
 				course.start = new ObjectMapper()
-						.readValue((String) o.get("start"), new TypeReference<Step>() {});
+						.readValue((String) o.get("start"), StepComposite.class);
 			} catch (IOException e) {
 				e.printStackTrace();
 				return null;

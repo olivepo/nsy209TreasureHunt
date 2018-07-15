@@ -9,25 +9,22 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  <servlet>
+
+    <servlet>
         <servlet-name>RestServer-servlet</servlet-name>
-        <servlet-class>
-            com.sun.jersey.spi.container.servlet.ServletContainer
-        </servlet-class>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
         <init-param>
-			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>services</param-value>
-		</init-param>
-        <init-param>
-            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
-            <param-value>true</param-value>
+             <param-name>jersey.config.server.provider.packages</param-name>
+             <param-value>services</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+   
     <servlet-mapping>
         <servlet-name>RestServer-servlet</servlet-name>
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
+    
     <!-- Ajout des contraintes de sécurité pour permettre à un utilisateur précis d'utiliser PUT -->
     <security-constraint>
 	<web-resource-collection>

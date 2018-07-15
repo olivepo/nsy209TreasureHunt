@@ -1,19 +1,15 @@
 package treasurehunt.client;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.core.MediaType;
-
-import org.codehaus.jackson.map.ObjectMapper;
-
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.GenericType;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.WebResource.Builder;
-import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
 import treasurehunt.model.Account;
 import treasurehunt.model.Accounts;
@@ -24,22 +20,13 @@ public class AccountRESTMethods {
 
 	public static boolean put(Account account) throws Exception {
 
-		Client client = Client.create();
-		client.addFilter(new HTTPBasicAuthFilter(Configuration.tomcatUser, Configuration.tomcatUserPassword));
+		Client client = ClientBuilder.newClient();
+		client.register(HttpAuthenticationFeature.basic(Configuration.tomcatUser, Configuration.tomcatUserPassword));
 
-		WebResource webResource = client.resource(baseUrl+"putAccount");
-
-		// Data send to web service.
-		ObjectMapper mapper = new ObjectMapper();
-		String input = null;
-		try {
-			input = mapper.writeValueAsString(account);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
-
-		ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, input);
+		WebTarget webTarget = client.target(baseUrl).path("putAccount");
+		
+		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.put(Entity.entity(account, MediaType.APPLICATION_JSON));
 
 		switch (response.getStatus()) {
 
@@ -54,9 +41,10 @@ public class AccountRESTMethods {
 
 	public static Account get(String email) throws Exception {
 
-		Client client = Client.create();
-		WebResource webResource = client.resource(baseUrl+"getAccount/"+email);
-		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+		Client client = ClientBuilder.newClient();
+		WebTarget webTarget = client.target(baseUrl).path("getAccount").path(email);
+		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.get();
 
 		switch (response.getStatus()) {
 
@@ -64,7 +52,7 @@ public class AccountRESTMethods {
 			return null;
 
 		case 200 :
-			return (Account) response.getEntity(Account.class);
+			return (Account) response.readEntity(Account.class);
 
 		default :
 			throw new Exception("Failed : HTTP error code : "+response.getStatus());
@@ -74,9 +62,10 @@ public class AccountRESTMethods {
 
 	public static boolean delete(String email) throws Exception {
 
-		Client client = Client.create();
-		WebResource webResource = client.resource(baseUrl+"deleteAccount/"+email);
-		ClientResponse response = webResource.accept(MediaType.TEXT_PLAIN).delete(ClientResponse.class);
+		Client client = ClientBuilder.newClient();
+		WebTarget webTarget = client.target(baseUrl).path("deleteAccount").path(email);
+		Invocation.Builder invocationBuilder = webTarget.request();
+		Response response = invocationBuilder.delete();
 
 		switch (response.getStatus())
 		{
@@ -95,21 +84,17 @@ public class AccountRESTMethods {
 
 	public static List<Account> getAll() throws Exception {
 
-		Client client = Client.create();
-
-		WebResource webResource = client.resource(baseUrl+"getAccounts");
-
-		Builder builder = webResource.accept(MediaType.APPLICATION_JSON)
-				.header("content-type", MediaType.APPLICATION_JSON);
-
-		ClientResponse response = builder.get(ClientResponse.class);
+		Client client = ClientBuilder.newClient();
+		WebTarget webTarget = client.target(baseUrl).path("getAccounts");
+		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.get();
 
 		// Status 200 is successful.
 		if (response.getStatus() != 200) {
 			throw new Exception("Failed : HTTP error code : "+response.getStatus());
 		}
 
-		Accounts accounts = response.getEntity(Accounts.class);
+		Accounts accounts = response.readEntity(Accounts.class);
 
 		return accounts.list;
 	}
