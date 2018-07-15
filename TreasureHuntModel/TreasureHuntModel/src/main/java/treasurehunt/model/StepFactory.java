@@ -2,6 +2,6 @@ package treasurehunt.model;
 
 public interface StepFactory {
 	
-	public Step createInstance();
+	public Step createInstance(String id, float latitude, float longitude);
 	
 }

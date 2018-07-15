@@ -5,14 +5,14 @@ import java.util.List;
 
 import javax.xml.bind.annotation.*;
 
-@XmlRootElement(name="Courses")
-public class Courses {
+@XmlRootElement(name="RunThroughs")
+public class RunThroughs {
 	
-	public List<Course> list;
+	public List<RunThrough> list;
 	
 	// constructeur public sans arguments nécéssaire à jackson
-	public Courses() {
-		list = new ArrayList<Course>();
+	public RunThroughs() {
+		list = new ArrayList<RunThrough>();
 	}
 	
 }

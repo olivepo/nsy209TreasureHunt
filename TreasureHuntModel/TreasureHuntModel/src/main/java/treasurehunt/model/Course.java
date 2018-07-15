@@ -10,6 +10,7 @@ public class Course {
 
 	public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:nnnnnnnnn");
 	
+	// constructeur public sans arguments nécéssaire à jackson
 	public Course() {
 		this.begin = LocalDateTime.now();
 		this.end = LocalDateTime.now();

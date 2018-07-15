@@ -2,9 +2,9 @@ package treasurehunt.model;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.*;
+import com.fasterxml.jackson.annotation.*;
 
-@XmlTransient
+@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")
 public abstract class Step {
 	
 	public String id;

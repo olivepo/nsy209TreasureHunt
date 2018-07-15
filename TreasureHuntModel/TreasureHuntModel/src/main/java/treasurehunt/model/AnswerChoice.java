@@ -8,6 +8,7 @@ public class AnswerChoice {
 	public String text;
 	public boolean isValid;
 	
+	// constructeur public sans arguments nécéssaire à jackson
 	public AnswerChoice() {
 		
 	}

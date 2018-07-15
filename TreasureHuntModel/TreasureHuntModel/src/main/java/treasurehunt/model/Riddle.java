@@ -12,6 +12,7 @@ public class Riddle {
 	public String jokerText;
 	public List<AnswerChoice> answerChoices;
 	
+	// constructeur public sans arguments nécéssaire à jackson
 	public Riddle() {
 		answerChoices = new ArrayList<AnswerChoice>();
 	}

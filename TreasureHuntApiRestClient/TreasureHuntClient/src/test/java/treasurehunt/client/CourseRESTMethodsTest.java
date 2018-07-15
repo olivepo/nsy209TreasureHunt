@@ -9,6 +9,7 @@ import java.util.List;
 import treasurehunt.model.Course;
 import treasurehunt.model.StepComposite;
 import treasurehunt.model.StepCompositeFactory;
+import treasurehunt.model.StepLeaf;
 import treasurehunt.model.StepLeafFactory;
 
 public class CourseRESTMethodsTest {
@@ -48,8 +49,15 @@ public class CourseRESTMethodsTest {
 		c.name = name;
 		c.end = end;
 		c.jokersAllowed = jokersAllowed;
-		c.start = (StepComposite) new StepCompositeFactory().createInstance();
+		c.start = (StepComposite) new StepCompositeFactory().createInstance("step1",0.0f,0.0f);
 		c.start.id = "step1id";
+		StepComposite step2 = (StepComposite) new StepCompositeFactory().createInstance("step2",0.0f,0.0f);
+		StepComposite step3 = (StepComposite) new StepCompositeFactory().createInstance("step3",0.0f,0.0f);
+		StepLeaf step4 = (StepLeaf) new StepLeafFactory().createInstance("step4",0.0f,0.0f);
+		c.start.addStep(step2);
+		c.start.addStep(step3);
+		step2.addStep(step4);
+		step3.addStep(step4);
 		
 		try {
 			return CourseRESTMethods.put(c);

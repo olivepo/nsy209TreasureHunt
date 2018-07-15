@@ -10,6 +10,7 @@ public class Accounts {
 	
 	public List<Account> list;
 	
+	// constructeur public sans arguments nécéssaire à jackson
 	public Accounts() {
 		list = new ArrayList<Account>();
 	}

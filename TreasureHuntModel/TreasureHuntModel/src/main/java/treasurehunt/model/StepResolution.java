@@ -9,6 +9,11 @@ public class StepResolution {
 	public int durationInMinutes;
 	public boolean jokerUsed;
 	
+	// constructeur public sans arguments nécéssaire à jackson
+	public StepResolution() {
+		
+	}
+	
 	@XmlTransient
 	public int getScore() {
 		return 0;
