@@ -2,6 +2,11 @@ package treasurehunt.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.bind.annotation.*;
 
@@ -42,5 +47,50 @@ public class Course {
 	
 	public int jokersAllowed;
 	public StepComposite start;
+	
+	@XmlTransient
+	public HashMap<String,Step> getStepsAsHashMap() {
+		HashMap<String,Step> result = new HashMap<String,Step>();
+		CourseStepsIterator iter = new CourseStepsIterator(start);
+		Step currentStep = null;
+		while (iter.hasNext()) {
+			currentStep = iter.next();
+			if (!(currentStep.id == start.id) && !result.containsKey(currentStep.id)) {
+				result.put(currentStep.id, currentStep);
+			}
+		}
+		return result;
+	}
+	
+	@XmlTransient
+	public List<Step> getSteps() {
+		return new ArrayList<Step>(getStepsAsHashMap().values());
+	}
+	public void setSteps(List<Step> steps) {
+		// l'étape de départ start doit obligatoirement être renseignée
+		if (start == null) return;
+		StepCompositeAddStepsFromList(start,steps);
+	}
+	
+	private void StepCompositeAddStepsFromList(StepComposite step,List<Step> steps) {
+		HashSet<String> nextStepsIds = new HashSet<String>(step.getNextStepsIds()); // copie car elle va être modifiée par le addStep()
+		Iterator<Step> iter;
+		Step currentStep;
+		for(String nextStepId : nextStepsIds) {
+			iter = steps.iterator();
+			while (iter.hasNext()) {
+				currentStep = iter.next();
+				if (currentStep.id.equals(nextStepId)) {
+					step.addStep(currentStep);
+					if (currentStep instanceof StepComposite) {
+						StepCompositeAddStepsFromList((StepComposite) currentStep,steps);
+					}
+				}
+			}
+			
+		}
+	}
+	
+	
 	
 }

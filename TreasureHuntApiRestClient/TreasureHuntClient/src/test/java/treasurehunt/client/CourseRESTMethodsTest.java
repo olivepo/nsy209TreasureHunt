@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import treasurehunt.model.Course;
+import treasurehunt.model.Riddle;
 import treasurehunt.model.StepComposite;
 import treasurehunt.model.StepCompositeFactory;
 import treasurehunt.model.StepLeaf;
@@ -51,6 +52,7 @@ public class CourseRESTMethodsTest {
 		c.jokersAllowed = jokersAllowed;
 		c.start = (StepComposite) new StepCompositeFactory().createInstance("step1",0.0f,0.0f);
 		c.start.id = "step1id";
+		c.start.riddle = new Riddle();
 		StepComposite step2 = (StepComposite) new StepCompositeFactory().createInstance("step2",0.0f,0.0f);
 		StepComposite step3 = (StepComposite) new StepCompositeFactory().createInstance("step3",0.0f,0.0f);
 		StepLeaf step4 = (StepLeaf) new StepLeafFactory().createInstance("step4",0.0f,0.0f);
@@ -82,6 +84,14 @@ public class CourseRESTMethodsTest {
 		if (!c.name.equals(name)) return false;
 		if (!c.end.equals(end)) return false;
 		if (!c.start.id.equals("step1id")) return false;
+		if (!c.start.getNextStepsIds().contains("step2")) return false;
+		if (!c.start.getNextStepsIds().contains("step3")) return false;
+		StepComposite step2 = (StepComposite) c.start.getNextStep("step2");
+		StepComposite step3 = (StepComposite) c.start.getNextStep("step3");
+		if (!step2.getNextStepsIds().contains("step4")) return false;
+		if (!step3.getNextStepsIds().contains("step4")) return false;
+		if (step2.getNextStep("step4") != step3.getNextStep("step4")) return false; // les deux doivent pointer vers le même objet step4
+		
 		return true;
 
 	}

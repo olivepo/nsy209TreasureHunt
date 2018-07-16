@@ -1,10 +1,11 @@
 package treasurehunt.model;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.*;
 
 @JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")
+@JsonSubTypes({ @JsonSubTypes.Type(value = StepComposite.class, name = "StepComposite"),
+				@JsonSubTypes.Type(value = StepLeaf.class, name = "StepLeaf") })
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public abstract class Step {
 	
 	public String id;
@@ -14,9 +15,5 @@ public abstract class Step {
 	public int maximumDurationInMinutes;
 	public String description;
 	public Riddle riddle;
-	public List<Step> nextSteps;
-	
-	public abstract void addStep(Step step);
-	public abstract void removeStep(Step step);
 	
 }

@@ -31,7 +31,7 @@ public class MongoDBSingleton {
 		return mDbSingleton;
 	} 
 	
-	public DB getTestdb(){
+	public DB getDb(){
 		if(mongoClient == null){
 			try {
 				mongoClient = new MongoClient(dbHost , dbPort);
