@@ -10,8 +10,8 @@ public class CourseStepsIterator implements Iterator<Step>{
 	Deque<Step> stack = new LinkedList<>();
 
 
-    public CourseStepsIterator(Step start) {
-        stack.add(start);
+    public CourseStepsIterator(Course course) {
+        stack.add(course.start);
     }
 
     @Override

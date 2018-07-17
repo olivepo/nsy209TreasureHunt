@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @XmlRootElement(name="Course")
 public class Course {
 
@@ -26,6 +28,7 @@ public class Course {
 	public String name;
 	
 	@XmlTransient
+	@JsonIgnore
 	public LocalDateTime begin;
 	@XmlElement
 	public String getBegin() {
@@ -36,6 +39,7 @@ public class Course {
 	}
 	
 	@XmlTransient
+	@JsonIgnore
 	public LocalDateTime end;
 	@XmlElement
 	public String getEnd() {
@@ -51,7 +55,7 @@ public class Course {
 	@XmlTransient
 	public HashMap<String,Step> getStepsAsHashMap() {
 		HashMap<String,Step> result = new HashMap<String,Step>();
-		CourseStepsIterator iter = new CourseStepsIterator(start);
+		CourseStepsIterator iter = new CourseStepsIterator(this);
 		Step currentStep = null;
 		while (iter.hasNext()) {
 			currentStep = iter.next();

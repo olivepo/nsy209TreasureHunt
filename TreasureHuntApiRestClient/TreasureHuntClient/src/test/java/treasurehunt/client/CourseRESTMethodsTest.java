@@ -6,6 +6,7 @@ import org.junit.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import treasurehunt.model.AnswerChoice;
 import treasurehunt.model.Course;
 import treasurehunt.model.Riddle;
 import treasurehunt.model.StepComposite;
@@ -53,8 +54,13 @@ public class CourseRESTMethodsTest {
 		c.start = (StepComposite) new StepCompositeFactory().createInstance("step1",0.0f,0.0f);
 		c.start.id = "step1id";
 		c.start.riddle = new Riddle();
+		c.start.riddle.isMCQ = true;	
+		c.start.riddle.answerChoices.add(new AnswerChoice("réponse1",true));
+		c.start.riddle.answerChoices.add(new AnswerChoice("réponse2",false));
 		StepComposite step2 = (StepComposite) new StepCompositeFactory().createInstance("step2",0.0f,0.0f);
 		StepComposite step3 = (StepComposite) new StepCompositeFactory().createInstance("step3",0.0f,0.0f);
+		step3.riddle = new Riddle();
+		step3.riddle.answerChoices.add(new AnswerChoice("Réponse d",true));
 		StepLeaf step4 = (StepLeaf) new StepLeafFactory().createInstance("step4",0.0f,0.0f);
 		c.start.addStep(step2);
 		c.start.addStep(step3);
@@ -91,6 +97,7 @@ public class CourseRESTMethodsTest {
 		if (!step2.getNextStepsIds().contains("step4")) return false;
 		if (!step3.getNextStepsIds().contains("step4")) return false;
 		if (step2.getNextStep("step4") != step3.getNextStep("step4")) return false; // les deux doivent pointer vers le même objet step4
+		if (!step3.riddle.answerChoices.get(0).text.equals("Réponse d")) return false;
 		
 		return true;
 

@@ -2,10 +2,12 @@ package treasurehunt.model;
 
 import javax.xml.bind.annotation.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @XmlRootElement(name="StepResolution")
 public class StepResolution {
 	
-	public Step step;
+	public String stepId;
 	public int durationInMinutes;
 	public boolean jokerUsed;
 	
@@ -15,13 +17,9 @@ public class StepResolution {
 	}
 	
 	@XmlTransient
+	@JsonIgnore
 	public int getScore() {
 		return 0;
-	}
-	
-	@XmlTransient
-	public String getStepId() {
-		return step.id;
 	}
 	
 }

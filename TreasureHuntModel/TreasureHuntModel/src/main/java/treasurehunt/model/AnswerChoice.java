@@ -13,4 +13,9 @@ public class AnswerChoice {
 		
 	}
 	
+	public AnswerChoice(String text,boolean isValid) {
+		this.text = text;
+		this.isValid = isValid;
+	}
+	
 }
