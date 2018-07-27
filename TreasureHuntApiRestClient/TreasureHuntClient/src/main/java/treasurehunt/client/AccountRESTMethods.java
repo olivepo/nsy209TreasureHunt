@@ -52,7 +52,7 @@ public class AccountRESTMethods {
 			return null;
 
 		case 200 :
-			return (Account) response.readEntity(Account.class);
+			return response.readEntity(Account.class);
 
 		default :
 			throw new Exception("Failed : HTTP error code : "+response.getStatus());

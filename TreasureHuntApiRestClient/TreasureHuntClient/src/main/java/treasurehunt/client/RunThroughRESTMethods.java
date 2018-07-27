@@ -52,7 +52,7 @@ public class RunThroughRESTMethods {
 			return null;
 
 		case 200 :
-			return (RunThrough) response.readEntity(RunThrough.class);
+			return response.readEntity(RunThrough.class);
 
 		default :
 			throw new Exception("Failed : HTTP error code : "+response.getStatus());

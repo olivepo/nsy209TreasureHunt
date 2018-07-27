@@ -51,7 +51,7 @@ public class CourseRESTMethods {
 			return null;
 
 		case 200 :
-			return (Course) response.readEntity(Course.class);
+			return response.readEntity(Course.class);
 
 		default :
 			throw new Exception("Failed : HTTP error code : "+response.getStatus());
