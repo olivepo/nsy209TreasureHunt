@@ -81,10 +81,13 @@ public class CourseRESTMethods {
 
 	}
 
-	public static List<Course> getNearestCourses(float latitude,float longitude) throws Exception {
+	public static List<Course> getNearestCourses(double latitude,double longitude,int radiusInMetres) throws Exception {
 		
 		Client client = ClientBuilder.newClient();
-		WebTarget webTarget = client.target(baseUrl).path("getNearestCourses").path("0.0").path("0.0");
+		WebTarget webTarget = client.target(baseUrl).path("getNearestCourses")
+				.path(String.valueOf(latitude))
+				.path(String.valueOf(longitude))
+				.path(String.valueOf(radiusInMetres));
 		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 

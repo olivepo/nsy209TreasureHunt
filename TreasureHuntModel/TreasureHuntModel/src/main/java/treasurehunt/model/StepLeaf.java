@@ -10,7 +10,7 @@ public class StepLeaf extends Step {
 		
 	}
 	
-	public StepLeaf(String id, float latitude, float longitude) {
+	public StepLeaf(String id, double latitude, double longitude) {
 		this();
 		this.id = id;
 		this.latitude = latitude;

@@ -19,7 +19,7 @@ public class StepComposite extends Step {
 		nextStepsIds= new HashSet<String>();
 	}
 	
-	public StepComposite(String id, float latitude, float longitude) {
+	public StepComposite(String id, double latitude, double longitude) {
 		this();
 		this.id = id;
 		this.latitude = latitude;

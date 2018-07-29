@@ -86,16 +86,25 @@ public class CourseWebController {
 	}
 
 	@GET
-	@Path("getNearestCourses/{latitude}/{longitude}")
+	@Path("getNearestCourses/{latitude}/{longitude}/{radiusInMetres}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Courses getNearestCourses(@PathParam("latitude") float latitude, @PathParam("longitude") float longitude) {
+	public Courses getNearestCourses(@PathParam("latitude") double latitude,
+			@PathParam("longitude") double longitude,
+			@PathParam("radiusInMetres") int radiusInMetres) {
 		MongoDBSingleton dbSingleton = MongoDBSingleton.getInstance();
 		DB db = dbSingleton.getDb();
 		DBCollection coll = db.getCollection(collectionName);
 		DBCursor cursor = coll.find().sort(new BasicDBObject(idKeyName, 1));
 		Courses courses = new Courses();
+		Course course;
 		while (cursor.hasNext()) {
-			courses.list.add(buildCourseFromDBObject(cursor.next()));
+			course = buildCourseFromDBObject(cursor.next());
+			if (haversineDistanceInMetresBetween(latitude,
+					longitude,
+					course.start.latitude,
+					course.start.longitude) <= radiusInMetres) {
+				courses.list.add(course);
+			}
 		}
 		return courses;
 	}
@@ -159,5 +168,20 @@ public class CourseWebController {
 			return null;
 		}
 		return course;
+	}
+	
+	private static int haversineDistanceInMetresBetween(double lat1, double lng1, double lat2, double lng2) {
+	    double earthRadiusInMetres = 6371000;
+	    double dLat = Math.toRadians(lat2-lat1);
+	    double dLng = Math.toRadians(lng2-lng1);
+	    double sindLat = Math.sin(dLat / 2);
+	    double sindLng = Math.sin(dLng / 2);
+	    double a = Math.pow(sindLat, 2) + Math.pow(sindLng, 2) * Math.cos(lat1) * Math.cos(lat2);
+	    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+	    double dist = earthRadiusInMetres * c;
+
+	    // arrondi au mètre
+	    return (int) Math.round(dist);
+	    
 	}
 }

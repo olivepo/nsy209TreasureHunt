@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.*;
 public abstract class Step {
 	
 	public String id;
-	public float latitude;
-	public float longitude;
+	public double latitude;
+	public double longitude;
 	public int scorePointsGivenIfSuccess;
 	public int maximumDurationInMinutes;
 	public String description;

@@ -21,6 +21,13 @@ public class CourseRESTMethodsTest {
 	private final static String name = "name";
 	private final static LocalDateTime end = LocalDateTime.now();
 	private final static int jokersAllowed = 3;
+	private final static double latitude = 47.796761; // guidel
+	private final static double longitude = -3.487450; // guidel
+	private final static int radiusInMetres = 7000;
+	private final static double outOfBoundslatitude = 47.747544; // lorient
+	private final static double outOfBoundslongitude = -3.366260; // lorient
+	private final static double inBoundslatitude = 47.770951; // guidel-plages
+	private final static double inBoundslongitude = -3.525428; // guidel-plages
 	
 	@Test
 	public void testAll() {
@@ -51,7 +58,7 @@ public class CourseRESTMethodsTest {
 		c.name = name;
 		c.end = end;
 		c.jokersAllowed = jokersAllowed;
-		c.start = (StepComposite) new StepCompositeFactory().createInstance("step1",0.0f,0.0f);
+		c.start = (StepComposite) new StepCompositeFactory().createInstance("step1",latitude,longitude);
 		c.start.id = "step1id";
 		c.start.riddle = new Riddle();
 		c.start.riddle.isMCQ = true;	
@@ -118,13 +125,19 @@ public class CourseRESTMethodsTest {
 
 		List<Course> list;
 		try {
-			list = CourseRESTMethods.getNearestCourses(0.0f,0.0f);
+			list = CourseRESTMethods.getNearestCourses(outOfBoundslatitude,outOfBoundslongitude,radiusInMetres);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
-		return !list.isEmpty();
-
+		if (!list.isEmpty()) return false;
+		try {
+			list = CourseRESTMethods.getNearestCourses(inBoundslatitude,inBoundslongitude,radiusInMetres);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return (list.size() == 1);
 	}
 
 }
