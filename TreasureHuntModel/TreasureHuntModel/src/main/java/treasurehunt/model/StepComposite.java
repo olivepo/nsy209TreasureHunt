@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.*;
 public class StepComposite extends Step {
 	
 	@XmlElement
-	private HashMap<String,Step> nextSteps;
+	public HashMap<String,Step> nextSteps;
 	@XmlElement
-	private HashSet<String> nextStepsIds;
+	public HashSet<String> nextStepsIds;
 	
 	// constructeur public sans arguments nécéssaire à jackson
 	public StepComposite() {
