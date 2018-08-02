@@ -1,11 +1,12 @@
 package treasurehunt.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@XmlRootElement(name="AnswerChoice")
 public class AnswerChoice {
 	
+	@JsonProperty
 	public String text;
+	@JsonProperty
 	public boolean isValid;
 	
 	// constructeur public sans arguments nécéssaire à jackson

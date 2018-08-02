@@ -1,14 +1,14 @@
 package treasurehunt.model;
 
-import javax.xml.bind.annotation.*;
+import com.fasterxml.jackson.annotation.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@XmlRootElement(name="StepResolution")
 public class StepResolution {
 	
+	@JsonProperty
 	public String stepId;
+	@JsonProperty
 	public int durationInMinutes;
+	@JsonProperty
 	public boolean jokerUsed;
 	
 	// constructeur public sans arguments nécéssaire à jackson
@@ -16,7 +16,6 @@ public class StepResolution {
 		
 	}
 	
-	@XmlTransient
 	@JsonIgnore
 	public int getScore() {
 		return 0;

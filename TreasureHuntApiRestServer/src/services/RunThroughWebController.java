@@ -26,6 +26,7 @@ import mongodb.MongoDBSingleton;
 import treasurehunt.model.RunThrough;
 import treasurehunt.model.RunThroughs;
 import treasurehunt.model.StepResolution;
+import treasurehunt.model.marshalling.JsonObjectMapperBuilder;
 
 @Path("/runThroughService")
 public class RunThroughWebController {
@@ -101,7 +102,7 @@ public class RunThroughWebController {
 	private DBObject buildDBObjectFromRunThrough(RunThrough runThrough) {
 		String serializedStepResolutions = null;
 		try {
-			ObjectMapper objectMapper = new ObjectMapper();
+			ObjectMapper objectMapper = JsonObjectMapperBuilder.buildJacksonObjectMapper();
 			serializedStepResolutions = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(runThrough.getStepResolutions());
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -126,7 +127,7 @@ public class RunThroughWebController {
 		runThrough.setStartedAt((String) dbObject.get("startedAt"));
 		runThrough.setEndedAt((String) dbObject.get("endedAt"));
 		try {
-			ObjectMapper objectMapper = new ObjectMapper();
+			ObjectMapper objectMapper = JsonObjectMapperBuilder.buildJacksonObjectMapper();
 			runThrough.setStepResolutions(objectMapper
 					.readValue((String) dbObject.get("stepResolutions"), new TypeReference<HashMap<String,StepResolution>>() {}));
 		} catch (IOException e) {

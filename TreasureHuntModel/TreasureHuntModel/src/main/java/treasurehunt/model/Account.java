@@ -2,15 +2,17 @@ package treasurehunt.model;
 
 import java.util.Hashtable;
 
-import javax.xml.bind.annotation.*;
+import com.fasterxml.jackson.annotation.*;
 
-@XmlRootElement(name="Account")
+
 public class Account {
 	
 	private static Hashtable<String,Account> accounts = new Hashtable<String,Account>();
-	
+	@JsonProperty
 	public String email;
+	@JsonProperty
 	public String login;
+	@JsonProperty
 	public String hashedPassword;
 	
 	// N�cessaire pour JACKSON ObjectMapper.ReadValue(), � ne pas utiliser !!!
@@ -35,7 +37,7 @@ public class Account {
 		return result;
 	}
 	
-	@XmlTransient
+	@JsonIgnore
 	public void setPassword(String password) {
 		
 		try {

@@ -8,11 +8,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.xml.bind.annotation.*;
+import com.fasterxml.jackson.annotation.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@XmlRootElement(name="Course")
 public class Course {
 
 	public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:nnnnnnnnn");
@@ -23,36 +20,42 @@ public class Course {
 		this.end = LocalDateTime.now();
 	}
 	
+	@JsonProperty
 	public String id;
+	@JsonProperty
 	public String accountEmail;
+	@JsonProperty
 	public String name;
 	
-	@XmlTransient
+
 	@JsonIgnore
 	public LocalDateTime begin;
-	@XmlElement
+	@JsonProperty
 	public String getBegin() {
 		return begin.format(formatter);
 	}
+	@JsonProperty
 	public void setBegin(String begin) {
 		this.begin = LocalDateTime.parse(begin, formatter);
 	}
 	
-	@XmlTransient
 	@JsonIgnore
 	public LocalDateTime end;
-	@XmlElement
+	@JsonProperty
 	public String getEnd() {
 		return end.format(formatter);
 	}
+	@JsonProperty
 	public void setEnd(String end) {
 		this.end = LocalDateTime.parse(end, formatter);
 	}
 	
+	@JsonProperty
 	public int jokersAllowed;
+	@JsonProperty
 	public StepComposite start;
 	
-	@XmlTransient
+	@JsonIgnore
 	public HashMap<String,Step> getStepsAsHashMap() {
 		HashMap<String,Step> result = new HashMap<String,Step>();
 		CourseStepsIterator iter = new CourseStepsIterator(this);
@@ -66,10 +69,11 @@ public class Course {
 		return result;
 	}
 	
-	@XmlTransient
+	@JsonProperty
 	public List<Step> getSteps() {
 		return new ArrayList<Step>(getStepsAsHashMap().values());
 	}
+	@JsonProperty
 	public void setSteps(List<Step> steps) {
 		// l'étape de départ start doit obligatoirement être renseignée
 		if (start == null) return;

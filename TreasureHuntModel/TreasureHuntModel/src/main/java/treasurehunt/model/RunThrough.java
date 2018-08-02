@@ -5,62 +5,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.Duration;
 import java.util.HashMap;
 
-import javax.xml.bind.annotation.*;
+import com.fasterxml.jackson.annotation.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@XmlRootElement(name="RunThrough")
 public class RunThrough {
 	
 	public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:nnnnnnnnn");
-	
-	public String id;
-	public String accountEmail;
-	public String courseId;
-	
-	@XmlTransient
-	@JsonIgnore
-	public LocalDateTime startedAt;
-	@XmlElement
-	public String getStartedAt() {
-		return startedAt.format(formatter);
-	}
-	public void setStartedAt(String startedAt) {
-		this.startedAt = LocalDateTime.parse(startedAt, formatter);
-	}
-	
-	@XmlTransient
-	@JsonIgnore
-	public LocalDateTime endedAt;
-	@XmlElement
-	public String getEndedAt() {
-		return endedAt.format(formatter);
-	}
-	public void setEndedAt(String endedAt) {
-		this.endedAt = LocalDateTime.parse(endedAt, formatter);
-	}
-	
-	@XmlTransient
-	private LocalDateTime currentStepBegin;
-	@XmlElement
-	public String getCurrentStepBegin() {
-		return currentStepBegin.format(formatter);
-	}
-	public void setCurrentStepBegin(String currentStepBegin) {
-		this.currentStepBegin = LocalDateTime.parse(currentStepBegin, formatter);
-	}
-	
-	@XmlTransient
-	private Step currentStep;
-	@XmlTransient
-	private HashMap<String,StepResolution> stepResolutions;
-	@XmlElement
-	public HashMap<String,StepResolution> getStepResolutions() {
-		return stepResolutions;
-	}
-	public void setStepResolutions(HashMap<String,StepResolution> stepResolutions) {
-		this.stepResolutions = stepResolutions;
-	}
 	
 	// constructeur public sans arguments nécéssaire à jackson
 	public RunThrough() {
@@ -70,22 +19,77 @@ public class RunThrough {
 		this.stepResolutions = new HashMap<String,StepResolution>();
 	}
 	
-	@XmlTransient
+	@JsonProperty
+	public String id;
+	@JsonProperty
+	public String accountEmail;
+	@JsonProperty
+	public String courseId;
+	
+	
+	@JsonIgnore
+	public LocalDateTime startedAt;
+	@JsonProperty
+	public String getStartedAt() {
+		return startedAt.format(formatter);
+	}
+	@JsonProperty
+	public void setStartedAt(String startedAt) {
+		this.startedAt = LocalDateTime.parse(startedAt, formatter);
+	}
+	
+	
+	@JsonIgnore
+	public LocalDateTime endedAt;
+	@JsonProperty
+	public String getEndedAt() {
+		return endedAt.format(formatter);
+	}
+	@JsonProperty
+	public void setEndedAt(String endedAt) {
+		this.endedAt = LocalDateTime.parse(endedAt, formatter);
+	}
+	
+	@JsonIgnore
+	private LocalDateTime currentStepBegin;
+	@JsonProperty
+	public String getCurrentStepBegin() {
+		return currentStepBegin.format(formatter);
+	}
+	@JsonProperty
+	public void setCurrentStepBegin(String currentStepBegin) {
+		this.currentStepBegin = LocalDateTime.parse(currentStepBegin, formatter);
+	}
+	
+	@JsonIgnore
+	private Step currentStep;
+	@JsonIgnore
+	private HashMap<String,StepResolution> stepResolutions;
+	@JsonProperty
+	public HashMap<String,StepResolution> getStepResolutions() {
+		return stepResolutions;
+	}
+	@JsonProperty
+	public void setStepResolutions(HashMap<String,StepResolution> stepResolutions) {
+		this.stepResolutions = stepResolutions;
+	}
+	
+	@JsonIgnore
 	public boolean isCompleted() {
 		return false;
 	}
 	
-	@XmlTransient
+	@JsonIgnore
 	public int getScore() {
 		return 0;
 	}
 	
-	@XmlTransient
+	@JsonIgnore
 	public Step getCurrentStep() {
 		return currentStep;
 	}
 	
-	@XmlTransient
+	@JsonIgnore
 	public void setCurrentStep(Step step) {
 		currentStepBegin = LocalDateTime.now();
 		currentStep = step;

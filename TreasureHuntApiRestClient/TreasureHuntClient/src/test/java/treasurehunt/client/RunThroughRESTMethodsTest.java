@@ -12,7 +12,9 @@ import treasurehunt.model.StepComposite;
 import treasurehunt.model.StepLeaf;
 
 public class RunThroughRESTMethodsTest {
-
+	
+	private final static String baseUrl = "http://35.234.90.191/TreasureHuntApiRestServer/api/";
+	
 	private final static String id = "uniqueid";
 	private final static String accountEmail = "test@montest.fr";
 	private final static String courseId = "uniqueId";
@@ -20,7 +22,9 @@ public class RunThroughRESTMethodsTest {
 	
 	@Test
 	public void testAll() {
-
+		
+		//Configuration.baseUrl = baseUrl;
+		
 		testDelete();
 		// base vide : Echec des operations GET,DELETE
 		assertFalse(testGet());

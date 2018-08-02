@@ -5,13 +5,14 @@ import java.util.HashSet;
 
 import javax.xml.bind.annotation.*;
 
-@XmlRootElement(name="StepComposite")
+import com.fasterxml.jackson.annotation.*;
+
 public class StepComposite extends Step {
 	
-	@XmlElement
-	public HashMap<String,Step> nextSteps;
-	@XmlElement
-	public HashSet<String> nextStepsIds;
+	@JsonIgnore
+	private HashMap<String,Step> nextSteps;
+	@JsonIgnore
+	private HashSet<String> nextStepsIds;
 	
 	// constructeur public sans arguments nécéssaire à jackson
 	public StepComposite() {
@@ -27,11 +28,11 @@ public class StepComposite extends Step {
 		
 	}
 	
-	@XmlTransient
+	@JsonProperty
 	public HashSet<String> getNextStepsIds() {
 		return nextStepsIds;
 	}
-	@XmlTransient
+	@JsonIgnore
 	public Step getNextStep(String id) {
 		return nextSteps.get(id);
 	}

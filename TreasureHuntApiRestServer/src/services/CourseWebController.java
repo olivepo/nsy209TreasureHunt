@@ -28,6 +28,7 @@ import treasurehunt.model.Course;
 import treasurehunt.model.Courses;
 import treasurehunt.model.Step;
 import treasurehunt.model.StepComposite;
+import treasurehunt.model.marshalling.JsonObjectMapperBuilder;;
 
 @Path("/courseService")
 public class CourseWebController {
@@ -128,7 +129,7 @@ public class CourseWebController {
 		String serializedStart = null;
 		String serializedSteps = null;
 		try {
-			ObjectMapper objectMapper = new ObjectMapper();
+			ObjectMapper objectMapper = JsonObjectMapperBuilder.buildJacksonObjectMapper();
 			serializedStart = objectMapper.writeValueAsString(course.start);
 			List<Step> steps = course.getSteps();
 			CollectionType listType = objectMapper.getTypeFactory().constructCollectionType(steps.getClass(), Step.class);
@@ -158,9 +159,8 @@ public class CourseWebController {
 		course.setEnd((String) dbObject.get("end"));
 		course.jokersAllowed = (int) dbObject.get("jokersAllowed");
 		try {
-			ObjectMapper objectMapper = new ObjectMapper();
-			course.start = objectMapper
-					.readValue((String) dbObject.get("start"), StepComposite.class);
+			ObjectMapper objectMapper = JsonObjectMapperBuilder.buildJacksonObjectMapper();
+			course.start = objectMapper.readValue((String) dbObject.get("start"), StepComposite.class);
 			course.setSteps(objectMapper
 					.readValue((String) dbObject.get("steps"), new TypeReference<List<Step>>() {}));
 		} catch (IOException e) {

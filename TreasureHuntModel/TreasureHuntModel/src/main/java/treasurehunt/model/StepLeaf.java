@@ -1,8 +1,7 @@
 package treasurehunt.model;
 
-import javax.xml.bind.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@XmlRootElement(name="StepLeaf")
 public class StepLeaf extends Step {
 	
 	// constructeur public sans arguments nécéssaire à jackson
@@ -17,6 +16,7 @@ public class StepLeaf extends Step {
 		this.longitude = longitude;
 	}
 	
+	@JsonProperty
 	public String courseEndMessage;
 
 

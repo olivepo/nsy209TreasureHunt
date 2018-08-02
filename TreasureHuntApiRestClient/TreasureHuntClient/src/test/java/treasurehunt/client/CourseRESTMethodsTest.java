@@ -15,7 +15,9 @@ import treasurehunt.model.StepLeaf;
 import treasurehunt.model.StepLeafFactory;
 
 public class CourseRESTMethodsTest {
-
+	
+	private final static String baseUrl = "http://35.234.90.191/TreasureHuntApiRestServer/api/";
+	
 	private final static String id = "uniqueid";
 	private final static String accountEmail = "test@montest.fr";
 	private final static String name = "name";
@@ -31,7 +33,9 @@ public class CourseRESTMethodsTest {
 	
 	@Test
 	public void testAll() {
-
+		
+		//Configuration.baseUrl = baseUrl;
+		
 		testDelete();
 		// base vide : Echec des operations GET,DELETE
 		assertFalse(testGet());
@@ -43,10 +47,16 @@ public class CourseRESTMethodsTest {
 		// base complete : réussite des opérations GET,DELETE
 		assertTrue(testGet());
 		assertTrue(testGetAll());
-		assertTrue(testDelete());
+		/*assertTrue(testDelete());
 
 		// base a nouveau vide
-		assertFalse(testGet());
+		assertFalse(testGet());*/
+		try {
+			CourseRESTMethods.getNearestCourses(inBoundslatitude, inBoundslongitude, 30000);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 

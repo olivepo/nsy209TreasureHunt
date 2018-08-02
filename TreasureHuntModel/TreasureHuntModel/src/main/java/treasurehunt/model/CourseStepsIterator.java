@@ -28,8 +28,10 @@ public class CourseStepsIterator implements Iterator<Step>{
         if (currentStep != null) {
             if (currentStep instanceof StepComposite) {
                 StepComposite s = (StepComposite) currentStep;
-                for (String nextStepId : s.getNextStepsIds()) { 
-                    stack.add(s.getNextStep(nextStepId));
+                for (String nextStepId : s.getNextStepsIds()) {
+                	if (s.getNextStep(nextStepId) != null) {
+                		stack.add(s.getNextStep(nextStepId));
+                	}
                 }
             }
         }

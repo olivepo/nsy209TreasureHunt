@@ -3,11 +3,11 @@ package treasurehunt.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@XmlRootElement(name="Courses")
 public class Courses {
 	
+	@JsonProperty
 	public List<Course> list;
 	
 	// constructeur public sans arguments nécéssaire à jackson
