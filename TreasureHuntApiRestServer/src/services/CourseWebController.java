@@ -39,6 +39,7 @@ public class CourseWebController {
 	@PUT
 	@Path("putCourse")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response putCourse(Course course) {
 		MongoDBSingleton dbSingleton = MongoDBSingleton.getInstance();
 		DB db = dbSingleton.getDb();
