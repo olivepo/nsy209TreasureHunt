@@ -37,16 +37,17 @@ public class RunThroughWebController {
 	@PUT
 	@Path("putRunThrough")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response putRunThrough(RunThrough runThrough) {
+	@Produces(MediaType.APPLICATION_JSON)
+	public RunThrough putRunThrough(RunThrough runThrough) {
 		MongoDBSingleton dbSingleton = MongoDBSingleton.getInstance();
 		DB db = dbSingleton.getDb();
 		DBCollection coll = db.getCollection(collectionName);
 		DBObject dbObject = buildDBObjectFromRunThrough(runThrough);
 		if (dbObject == null) {
-			return Response.serverError().build();
+			return null;
 		}
 		coll.insert(dbObject);
-		return Response.ok().build();
+		return buildRunThroughFromDBObject(dbObject);
 	}
 
 	@GET

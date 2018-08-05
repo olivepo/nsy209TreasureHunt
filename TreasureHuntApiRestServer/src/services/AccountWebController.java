@@ -19,12 +19,14 @@ public class AccountWebController {
 	@PUT
 	@Path("putAccount")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response putAccount(Account account) {
+	@Produces(MediaType.APPLICATION_JSON)
+	public Account putAccount(Account account) {
 		MongoDBSingleton dbSingleton = MongoDBSingleton.getInstance();
 		DB db = dbSingleton.getDb();
 		DBCollection coll = db.getCollection(collectionName);
-		coll.insert(buildDBObjectFromAccount(account));
-		return Response.ok().build();
+		DBObject dbObject = buildDBObjectFromAccount(account);
+		coll.insert(dbObject);
+		return buildAccountFromDBObject(dbObject);
 	}
 
 	@GET

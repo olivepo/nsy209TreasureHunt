@@ -20,7 +20,7 @@ public class CourseRESTMethodsTest {
 	
 	private final static String id = "uniqueid";
 	private final static String accountEmail = "test@montest.fr";
-	private final static String name = "name";
+	private final static String name = "Chasse de test";
 	private final static LocalDateTime end = LocalDateTime.now();
 	private final static int jokersAllowed = 3;
 	private final static double latitude = 47.796761; // guidel
@@ -70,15 +70,42 @@ public class CourseRESTMethodsTest {
 		c.jokersAllowed = jokersAllowed;
 		c.start = (StepComposite) new StepCompositeFactory().createInstance("step1",latitude,longitude);
 		c.start.id = "step1id";
+		c.start.description = "Rendez-vous à la première étape";
 		c.start.riddle = new Riddle();
 		c.start.riddle.isMCQ = true;	
-		c.start.riddle.answerChoices.add(new AnswerChoice("réponse1",true));
-		c.start.riddle.answerChoices.add(new AnswerChoice("réponse2",false));
-		StepComposite step2 = (StepComposite) new StepCompositeFactory().createInstance("step2",0.0f,0.0f);
-		StepComposite step3 = (StepComposite) new StepCompositeFactory().createInstance("step3",0.0f,0.0f);
+		c.start.riddle.text = "Donnez la bonne réponse";
+		c.start.riddle.jokerText = "Choisissez la bone réponse";
+		c.start.riddle.answerChoices.add(new AnswerChoice("La bonne réponse",true));
+		c.start.riddle.answerChoices.add(new AnswerChoice("une mauvaise réponse",false));
+		c.start.riddle.answerChoices.add(new AnswerChoice("une mauvaise réponse",false));
+		c.start.riddle.answerChoices.add(new AnswerChoice("une mauvaise réponse",false));
+		StepComposite step2 = (StepComposite) new StepCompositeFactory().createInstance("step2",47.796095,-3.482712);	
+		step2.description = "Rendez-vous à la deuxième étape";
+		step2.riddle = new Riddle();
+		step2.riddle.isMCQ = true;
+		step2.riddle.text = "Donnez la bonne réponse";
+		step2.riddle.answerChoices.add(new AnswerChoice("une mauvaise réponse",false));
+		step2.riddle.answerChoices.add(new AnswerChoice("La bonne réponse",true));
+		step2.riddle.answerChoices.add(new AnswerChoice("une mauvaise réponse",false));
+		step2.riddle.answerChoices.add(new AnswerChoice("une mauvaise réponse",false));
+		StepComposite step3 = (StepComposite) new StepCompositeFactory().createInstance("step3",47.792789,-3.491570);
+		step3.description = "Rendez-vous à la troisième étape";
 		step3.riddle = new Riddle();
-		step3.riddle.answerChoices.add(new AnswerChoice("Réponse d",true));
-		StepLeaf step4 = (StepLeaf) new StepLeafFactory().createInstance("step4",0.0f,0.0f);
+		step3.riddle.isMCQ = true;
+		step3.riddle.text = "Donnez la bonne réponse";
+		step3.riddle.answerChoices.add(new AnswerChoice("une mauvaise réponse",false));
+		step3.riddle.answerChoices.add(new AnswerChoice("une mauvaise réponse",false));
+		step3.riddle.answerChoices.add(new AnswerChoice("La bonne réponse",true));
+		step3.riddle.answerChoices.add(new AnswerChoice("une mauvaise réponse",false));
+		StepLeaf step4 = (StepLeaf) new StepLeafFactory().createInstance("step4",47.790349,-3.488269);
+		step4.description = "Rendez-vous à l'étape finale";
+		step4.riddle = new Riddle();
+		step4.riddle.isMCQ = true;
+		step4.riddle.text = "Quelle est la couleur du cheval blanc d'Henri IV après la bataille ?";
+		step4.riddle.answerChoices.add(new AnswerChoice("Blanc",false));
+		step4.riddle.answerChoices.add(new AnswerChoice("Rouge",false));
+		step4.riddle.answerChoices.add(new AnswerChoice("Gris",false));
+		step4.riddle.answerChoices.add(new AnswerChoice("A la fois blanc, rouge et gris",true));
 		c.start.addStep(step2);
 		c.start.addStep(step3);
 		step2.addStep(step4);
@@ -114,7 +141,7 @@ public class CourseRESTMethodsTest {
 		if (!step2.getNextStepsIds().contains("step4")) return false;
 		if (!step3.getNextStepsIds().contains("step4")) return false;
 		if (step2.getNextStep("step4") != step3.getNextStep("step4")) return false; // les deux doivent pointer vers le même objet step4
-		if (!step3.riddle.answerChoices.get(0).text.equals("Réponse d")) return false;
+		if (!step3.riddle.answerChoices.get(0).text.equals("une mauvaise réponse")) return false;
 		
 		return true;
 
@@ -147,7 +174,7 @@ public class CourseRESTMethodsTest {
 			e.printStackTrace();
 			return false;
 		}
-		return (list.size() == 1);
+		return (list.size() >= 1);
 	}
 
 }
