@@ -40,16 +40,16 @@ public class CourseWebController {
 	@Path("putCourse")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response putCourse(Course course) {
+	public Course putCourse(Course course) {
 		MongoDBSingleton dbSingleton = MongoDBSingleton.getInstance();
 		DB db = dbSingleton.getDb();
 		DBCollection coll = db.getCollection(collectionName);
 		DBObject dbObject = buildDBObjectFromCourse(course);
 		if (dbObject == null) {
-			return Response.serverError().build();
+			return null;
 		}
 		coll.insert(dbObject);
-		return Response.ok().build();
+		return buildCourseFromDBObject(dbObject);
 	}
 
 	@GET
