@@ -155,6 +155,7 @@ public class CourseWebController {
 		}
 		Course course = new Course();
 		course.id = (String) dbObject.get("id");
+		course.accountEmail = (String) dbObject.get("accountEmail");
 		course.name = (String) dbObject.get("name");
 		course.setBegin((String) dbObject.get("begin"));
 		course.setEnd((String) dbObject.get("end"));
