@@ -25,7 +25,12 @@ public class AccountWebController {
 		DB db = dbSingleton.getDb();
 		DBCollection coll = db.getCollection(collectionName);
 		DBObject dbObject = buildDBObjectFromAccount(account);
-		coll.insert(dbObject);
+		DBObject ExistingDbObject = coll.findOne(new BasicDBObject(idKeyName, account.email));
+		if (ExistingDbObject == null) {
+			coll.insert(dbObject);
+		} else {
+			coll.update(new BasicDBObject(idKeyName,account.email), dbObject);
+		}
 		return buildAccountFromDBObject(dbObject);
 	}
 

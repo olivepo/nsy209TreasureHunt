@@ -15,7 +15,6 @@ public class RunThroughRESTMethodsTest {
 	
 	private final static String baseUrl = "http://35.234.90.191/TreasureHuntApiRestServer/api/";
 	
-	private final static String id = "uniqueid";
 	private final static String accountEmail = "test@montest.fr";
 	private final static String courseId = "uniqueId";
 	private final static LocalDateTime endedAt = LocalDateTime.now();
@@ -36,19 +35,18 @@ public class RunThroughRESTMethodsTest {
 		// base complete : réussite des opérations GET,DELETE
 		assertTrue(testGet());
 		assertTrue(testGetAll());
-		assertTrue(testDelete());
+		/*assertTrue(testDelete());
 
 		// base a nouveau vide
-		assertFalse(testGet());
+		assertFalse(testGet());*/
 	}
 
 
 	private boolean testPut() {
 		
 		RunThrough r = new RunThrough();
-		r.id = id;
-		r.accountEmail = accountEmail;
-		r.courseId = courseId;
+		r.setAccountEmail(accountEmail);
+		r.setCourseId(courseId);
 		r.endedAt = endedAt;
 		StepComposite aStep = new StepComposite("aStep",0.0f,0.0f);
 		StepLeaf finalStep = new StepLeaf("aFinalStep",0.0f,0.0f);
@@ -71,15 +69,14 @@ public class RunThroughRESTMethodsTest {
 
 		RunThrough r;
 		try {
-			r = RunThroughRESTMethods.get(id);
+			r = RunThroughRESTMethods.get(accountEmail,courseId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
 		if (r == null) return false;
-		if (!r.id.equals(id)) return false;
-		if (!r.accountEmail.equals(accountEmail)) return false;
-		if (!r.courseId.equals(courseId)) return false;
+		if (!r.getAccountEmail().equals(accountEmail)) return false;
+		if (!r.getCourseId().equals(courseId)) return false;
 		if (!r.endedAt.equals(endedAt)) return false;
 		if (r.getStepResolutions().size() != 2) return false;
 		
@@ -90,7 +87,7 @@ public class RunThroughRESTMethodsTest {
 	private boolean testDelete() {
 
 		try {
-			return RunThroughRESTMethods.delete(id);
+			return RunThroughRESTMethods.delete(accountEmail,courseId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;

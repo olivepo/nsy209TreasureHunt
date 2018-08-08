@@ -20,12 +20,34 @@ public class RunThrough {
 	}
 	
 	@JsonProperty
-	public String id;
-	@JsonProperty
-	public String accountEmail;
-	@JsonProperty
-	public String courseId;
+	private String id;
+	@JsonIgnore
+	public String getId() {
+		return id;
+	}
 	
+	@JsonProperty
+	private String accountEmail;
+	@JsonIgnore
+	public String getAccountEmail() {
+		return accountEmail;
+	}
+	@JsonIgnore
+	public void setAccountEmail(String accountEmail) {
+		this.accountEmail = accountEmail;
+		buildId();
+	}
+	@JsonProperty
+	private String courseId;
+	@JsonIgnore
+	public String getCourseId() {
+		return courseId;
+	}
+	@JsonIgnore
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
+		buildId();
+	}
 	
 	@JsonIgnore
 	public LocalDateTime startedAt;
@@ -108,6 +130,14 @@ public class RunThrough {
 			}
 		}
 		return result;
+	}
+	
+	private void buildId() {
+		id = buildId(accountEmail,courseId);
+	}
+	
+	public static String buildId(String accountEmail,String courseId) {
+		return accountEmail+";"+courseId;
 	}
 	
 	public void validateCurrentStepResolution(LocalDateTime time, boolean jokerUsed) {

@@ -48,7 +48,12 @@ public class CourseWebController {
 		if (dbObject == null) {
 			return null;
 		}
-		coll.insert(dbObject);
+		DBObject ExistingDbObject = coll.findOne(new BasicDBObject(idKeyName, course.id));
+		if (ExistingDbObject == null) {
+			coll.insert(dbObject);
+		} else {
+			coll.update(new BasicDBObject(idKeyName,course.id), dbObject);
+		}
 		return buildCourseFromDBObject(dbObject);
 	}
 

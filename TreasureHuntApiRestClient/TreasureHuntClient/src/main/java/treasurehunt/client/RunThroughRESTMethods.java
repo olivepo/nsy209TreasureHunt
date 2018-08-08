@@ -39,10 +39,10 @@ public class RunThroughRESTMethods {
 
 	}
 
-	public static RunThrough get(String id) throws Exception {
+	public static RunThrough get(String accountEmail,String courseId) throws Exception {
 
 		Client client = ClientBuilder.newClient();
-		WebTarget webTarget= client.target(baseUrl).path("getRunThrough").path(id);
+		WebTarget webTarget= client.target(baseUrl).path("getRunThrough").path(accountEmail).path(courseId);
 		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 
@@ -60,10 +60,10 @@ public class RunThroughRESTMethods {
 
 	}
 
-	public static boolean delete(String id) throws Exception {
+	public static boolean delete(String accountEmail,String courseId) throws Exception {
 
 		Client client = ClientBuilder.newClient();
-		WebTarget webTarget= client.target(baseUrl).path("deleteRunThrough").path(id);
+		WebTarget webTarget= client.target(baseUrl).path("deleteRunThrough").path(accountEmail).path(courseId);
 		Invocation.Builder invocationBuilder = webTarget.request();
 		Response response = invocationBuilder.delete();
 

@@ -46,18 +46,24 @@ public class RunThroughWebController {
 		if (dbObject == null) {
 			return null;
 		}
-		coll.insert(dbObject);
+		DBObject ExistingDbObject = coll.findOne(new BasicDBObject(idKeyName, runThrough.getId()));
+		if (ExistingDbObject == null) {
+			coll.insert(dbObject);
+		} else {
+			coll.update(new BasicDBObject(idKeyName,runThrough.getId()), dbObject);
+		}
 		return buildRunThroughFromDBObject(dbObject);
 	}
 
 	@GET
-	@Path("getRunThrough/{id}")
+	@Path("getRunThrough/{accountEmail}/{courseId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public RunThrough getRunThrough(@PathParam("id") String id) {
+	public RunThrough getRunThrough(@PathParam("accountEmail") String accountEmail,
+			@PathParam("courseId") String courseId) {
 		MongoDBSingleton dbSingleton = MongoDBSingleton.getInstance();
 		DB db = dbSingleton.getDb();
 		DBCollection coll = db.getCollection(collectionName);
-		DBObject dbObject = coll.findOne(new BasicDBObject(idKeyName, id));
+		DBObject dbObject = coll.findOne(new BasicDBObject(idKeyName, RunThrough.buildId(accountEmail,courseId)));
 		if (dbObject == null) {
 			return null;
 		}
@@ -66,22 +72,23 @@ public class RunThroughWebController {
 	}
 
 	@DELETE
-	@Path("deleteRunThrough/{id}")
-	public Response deleteRunThrough(@PathParam("id") String id) {
+	@Path("deleteRunThrough/{accountEmail}/{courseId}")
+	public Response deleteRunThrough(@PathParam("accountEmail") String accountEmail,
+			@PathParam("courseId") String courseId) {
 
 		// Retrieve the user from the database.
 		MongoDBSingleton dbSingleton = MongoDBSingleton.getInstance();
 		DB db = dbSingleton.getDb();
 		DBCollection coll = db.getCollection(collectionName);
-		DBObject dbObject = coll.findOne(new BasicDBObject(idKeyName, id));
+		DBObject dbObject = coll.findOne(new BasicDBObject(idKeyName, RunThrough.buildId(accountEmail,courseId)));
 
 		// If the user did not exist, return an error. Otherwise, remove the user.
 		if (dbObject == null) {
 			return Response.status(Status.BAD_REQUEST)
-					.entity(String.format("Le parcours id: %s n'existe pas.", id)).build();
+					.entity(String.format("Le parcours id: %s n'existe pas.", RunThrough.buildId(accountEmail,courseId))).build();
 		}
 
-		coll.remove(new BasicDBObject(idKeyName, id));
+		coll.remove(new BasicDBObject(idKeyName, RunThrough.buildId(accountEmail,courseId)));
 		return Response.ok().build();
 	}
 	
@@ -109,9 +116,9 @@ public class RunThroughWebController {
 			e.printStackTrace();
 			return null;
 		}
-		return new BasicDBObject(idKeyName, runThrough.id)
-				.append("accountEmail", runThrough.accountEmail)
-				.append("courseId", runThrough.courseId)
+		return new BasicDBObject(idKeyName, runThrough.getId())
+				.append("accountEmail", runThrough.getAccountEmail())
+				.append("courseId", runThrough.getCourseId())
 				.append("startedAt", runThrough.getStartedAt())
 				.append("endedAt", runThrough.getEndedAt())
 				.append("stepResolutions", serializedStepResolutions);
@@ -122,9 +129,8 @@ public class RunThroughWebController {
 			return null;
 		}
 		RunThrough runThrough = new RunThrough();
-		runThrough.id = (String) dbObject.get("id");
-		runThrough.accountEmail = (String) dbObject.get("accountEmail");
-		runThrough.courseId = (String) dbObject.get("courseId");
+		runThrough.setAccountEmail((String) dbObject.get("accountEmail"));
+		runThrough.setCourseId((String) dbObject.get("courseId"));
 		runThrough.setStartedAt((String) dbObject.get("startedAt"));
 		runThrough.setEndedAt((String) dbObject.get("endedAt"));
 		try {
