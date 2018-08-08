@@ -81,7 +81,11 @@ public class RunThrough {
 	
 	@JsonIgnore
 	public int getScore() {
-		return 0;
+		int result = 0;
+		for (String key : stepResolutions.keySet()) {
+			// à faire
+		}
+		return result;
 	}
 	
 	@JsonIgnore
@@ -93,6 +97,17 @@ public class RunThrough {
 	public void setCurrentStep(Step step) {
 		currentStepBegin = LocalDateTime.now();
 		currentStep = step;
+	}
+	
+	@JsonIgnore
+	public int getJokersUsed() {
+		int result = 0;
+		for (String key : stepResolutions.keySet()) {
+			if (stepResolutions.get(key).jokerUsed) {
+				result++;
+			}
+		}
+		return result;
 	}
 	
 	public void validateCurrentStepResolution(LocalDateTime time, boolean jokerUsed) {
