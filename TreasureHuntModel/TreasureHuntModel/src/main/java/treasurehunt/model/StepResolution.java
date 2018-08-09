@@ -17,8 +17,14 @@ public class StepResolution {
 	}
 	
 	@JsonIgnore
-	public int getScore() {
-		return 0;
+	public int getScore(Step step) {
+		if (step.maximumDurationInMinutes <= 0) {
+			return step.scorePointsGivenIfSuccess;
+		} else {
+			float coefficient = jokerUsed ? 0 : (Float.max(0,
+					(float)step.maximumDurationInMinutes - (float)durationInMinutes))/(float)step.maximumDurationInMinutes;
+			return Math.round(step.scorePointsGivenIfSuccess * coefficient);
+		}
 	}
 	
 }

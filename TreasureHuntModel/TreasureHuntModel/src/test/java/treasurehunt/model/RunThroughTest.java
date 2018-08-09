@@ -1,22 +1,12 @@
-package treasurehunt.client;
+package treasurehunt.model;
 
 import static org.junit.Assert.*;
-import org.junit.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import treasurehunt.model.AnswerChoice;
-import treasurehunt.model.Course;
-import treasurehunt.model.Riddle;
-import treasurehunt.model.StepComposite;
-import treasurehunt.model.StepCompositeFactory;
-import treasurehunt.model.StepLeaf;
-import treasurehunt.model.StepLeafFactory;
+import org.junit.Test;
 
-public class CourseRESTMethodsTest {
-	
-	private final static String baseUrl = "http://35.234.90.191/TreasureHuntApiRestServer/api/";
+public class RunThroughTest {
 	
 	private final static String id = "uniqueid";
 	private final static String accountEmail = "test@montest.fr";
@@ -32,36 +22,8 @@ public class CourseRESTMethodsTest {
 	private final static double inBoundslongitude = -3.525428; // guidel-plages
 	
 	@Test
-	public void testAll() {
+	public void testgetScore() {
 		
-		//Configuration.baseUrl = baseUrl;
-		
-		testDelete();
-		// base vide : Echec des operations GET,DELETE
-		assertFalse(testGet());
-		assertFalse(testDelete());
-
-		// insertion de 1 element
-		assertTrue(testPut());
-
-		// base complete : réussite des opérations GET,DELETE
-		assertTrue(testGet());
-		assertTrue(testGetAll());
-		/*assertTrue(testDelete());
-
-		// base a nouveau vide
-		assertFalse(testGet());*/
-		try {
-			CourseRESTMethods.getNearestCourses(inBoundslatitude, inBoundslongitude, 30000);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-
-	private boolean testPut() {
-
 		Course c = new Course();
 		c.id = id;
 		c.accountEmail = accountEmail;
@@ -119,70 +81,20 @@ public class CourseRESTMethodsTest {
 		step2.addStep(step4);
 		step3.addStep(step4);
 		
-		try {
-			return CourseRESTMethods.put(c);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-
-	}
-
-	private boolean testGet() {
-
-		Course c;
-		try {
-			c = CourseRESTMethods.get(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		if (c == null) return false;
-		if (!c.id.equals(id)) return false;
-		if (!c.name.equals(name)) return false;
-		if (!c.end.equals(end)) return false;
-		if (!c.start.id.equals("step1id")) return false;
-		if (!c.start.getNextStepsIds().contains("step2")) return false;
-		if (!c.start.getNextStepsIds().contains("step3")) return false;
-		StepComposite step2 = (StepComposite) c.start.getNextStep("step2");
-		StepComposite step3 = (StepComposite) c.start.getNextStep("step3");
-		if (!step2.getNextStepsIds().contains("step4")) return false;
-		if (!step3.getNextStepsIds().contains("step4")) return false;
-		if (step2.getNextStep("step4") != step3.getNextStep("step4")) return false; // les deux doivent pointer vers le même objet step4
-		if (!step3.riddle.answerChoices.get(0).text.equals("une mauvaise réponse")) return false;
+		RunThrough r = new RunThrough();
+		Step currentStep = c.start;
+		r.setCourseId(c.id);
+		r.setAccountEmail(accountEmail);
+		r.setCurrentStep(currentStep);
+		r.validateCurrentStepResolution(LocalDateTime.now().plusMinutes(5), false);
+		currentStep = ((StepComposite) currentStep).getNextStep(step2.id);
+		r.setCurrentStep(currentStep);
+		r.validateCurrentStepResolution(LocalDateTime.now().plusMinutes(15), false);
+		currentStep = ((StepComposite) currentStep).getNextStep(step4.id);
+		r.setCurrentStep(currentStep);
+		r.validateCurrentStepResolution(LocalDateTime.now().plusHours(1), true);
 		
-		return true;
-
-	}
-
-	private boolean testDelete() {
-
-		try {
-			return CourseRESTMethods.delete(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-
-	}
-
-	private boolean testGetAll() {
-
-		List<Course> list;
-		try {
-			list = CourseRESTMethods.getNearestCourses(outOfBoundslatitude,outOfBoundslongitude,radiusInMetres);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		if (!list.isEmpty()) return false;
-		try {
-			list = CourseRESTMethods.getNearestCourses(inBoundslatitude,inBoundslongitude,radiusInMetres);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		return (list.size() >= 1);
+		assertTrue(r.getScore(c) == 750);
 	}
 
 }

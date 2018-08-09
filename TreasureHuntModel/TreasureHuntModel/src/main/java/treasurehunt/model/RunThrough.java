@@ -102,10 +102,14 @@ public class RunThrough {
 	}
 	
 	@JsonIgnore
-	public int getScore() {
+	public int getScore(Course course) {
 		int result = 0;
+		StepResolution currentStepResolution;
+		HashMap<String,Step> steps = course.getStepsAsHashMap();
+		steps.put(course.start.id, course.start); // start ne fait pas partie des steps fournis
 		for (String key : stepResolutions.keySet()) {
-			// à faire
+			currentStepResolution = stepResolutions.get(key);
+			result += currentStepResolution.getScore(steps.get(currentStepResolution.stepId));
 		}
 		return result;
 	}
