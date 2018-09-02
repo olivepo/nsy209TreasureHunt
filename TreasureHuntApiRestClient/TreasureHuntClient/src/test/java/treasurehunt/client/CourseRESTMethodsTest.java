@@ -34,7 +34,7 @@ public class CourseRESTMethodsTest {
 	@Test
 	public void testAll() {
 		
-		//Configuration.baseUrl = baseUrl;
+		Configuration.baseUrl = baseUrl;
 		
 		testDelete();
 		// base vide : Echec des operations GET,DELETE
@@ -70,7 +70,7 @@ public class CourseRESTMethodsTest {
 		c.jokersAllowed = jokersAllowed;
 		c.start = (StepComposite) new StepCompositeFactory().createInstance("step1",latitude,longitude);
 		c.start.id = "step1id";
-		c.start.description = "Rendez-vous à la première étape";
+		c.start.description = "Rendez-vous devant la maison avec le porche bleu";
 		c.start.riddle = new Riddle();
 		c.start.riddle.isMCQ = true;	
 		c.start.riddle.text = "Donnez la bonne réponse";
@@ -82,7 +82,7 @@ public class CourseRESTMethodsTest {
 		c.start.maximumDurationInMinutes = 0;
 		c.start.scorePointsGivenIfSuccess = 500;
 		StepComposite step2 = (StepComposite) new StepCompositeFactory().createInstance("step2",47.796095,-3.482712);	
-		step2.description = "Rendez-vous à la deuxième étape";
+		step2.description = "Faîtes 100 pas vers l'est puis 50 au sud pour atteindre l'étape suivante";
 		step2.riddle = new Riddle();
 		step2.riddle.isMCQ = true;
 		step2.riddle.text = "Donnez la bonne réponse";
@@ -104,7 +104,7 @@ public class CourseRESTMethodsTest {
 		step3.maximumDurationInMinutes = 15;
 		step3.scorePointsGivenIfSuccess = 1000;
 		StepLeaf step4 = (StepLeaf) new StepLeafFactory().createInstance("step4",47.790349,-3.488269);
-		step4.description = "Rendez-vous à l'étape finale";
+		step4.description = "Pour finir le parcours, suivez le chemin de terre jusqu'à l'orée du bois.";
 		step4.riddle = new Riddle();
 		step4.riddle.isMCQ = true;
 		step4.riddle.text = "Quelle est la couleur du cheval blanc d'Henri IV après la bataille ?";
